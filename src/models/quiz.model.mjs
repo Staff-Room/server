@@ -20,7 +20,7 @@ const quiz = new mongoose.Schema({
         unique: true
     },
     multiple_answers :{
-        type: Boolean,
+        type: String,
         default: false,
     },
     right_answer :{

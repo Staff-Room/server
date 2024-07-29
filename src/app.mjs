@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname,'public')))
 // app.use(apiRequestEducator)
 
 // routes
-app.use('/admin',adminRoute)
+app.use('/admin',adminMiddleware,adminRoute)
 app.use('/superuser',superUserMiddleware, superUserRoute)
 app.use('/api/educator', educatorMiddleware ,educatorRoute)
 app.use('/api/student',studentMiddleware, studentRoute)

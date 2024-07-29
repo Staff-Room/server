@@ -1,17 +1,12 @@
 import { Router } from 'express';
+import { getAuthSuperUserController, postAuthSuperUserController } from '../controllers/superuser/auth.superUser.controller.mjs';
+import { getDashboardSuperUserController } from '../controllers/superuser/dashboard.superUser.controller.mjs';
 
 const superUserRoute = new Router();
 
 // Add superUserRoute
-superUserRoute.get('/', (req, res)=>{
-    res.send('this is an auth SuperUser route')
-});
-// superUserRoute.post('/', postAuthEducatorController);
-// superUserRoute.put('/', SessionController.store);
-// superUserRoute.delete('/', SessionController.store);
+superUserRoute.route('/',).get(getAuthSuperUserController).post(postAuthSuperUserController)
 
-superUserRoute.get('/dashboard', (req, res)=>{
-    res.send('this is an auth SuperUser dashboard')
-});
+superUserRoute.get('/dashboard', getDashboardSuperUserController);
 
 export default superUserRoute;

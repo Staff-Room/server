@@ -9,6 +9,14 @@ const log = new mongoose.Schema({
         type:String,
         require:true
     },
+    host:{
+        type:String,
+        require:true
+    },
+    protocol:{
+        type:String,
+        require:true
+    },
     status:{
         type:String,
         require:true,
