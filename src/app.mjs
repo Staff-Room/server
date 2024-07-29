@@ -37,7 +37,7 @@ const limiter = RateLimit({
 app.use(limiter);
 app.set('view engine', 'ejs');
 
-app.use(urlencoded ( {extends :false}))
+app.use(urlencoded ( { extended: true }))
 app.use(express.static(path.join(__dirname,'public')))
 // app.use(apiRequestEducator)
 
