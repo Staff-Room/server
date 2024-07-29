@@ -3,7 +3,7 @@ import app from "./app.mjs";
 import connectDB from "./db/connectDB.mjs";
 
 // connection to database
-connectDB()
+// connectDB()
 
 
 // express is start learning
