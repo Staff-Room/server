@@ -4,31 +4,38 @@ const educator = new mongoose.Schema({
     first_Name :{
         type: String,
         require:true
-        
     },
     last_Name :{
         type: String,
         require:true
-        
     },
     gender:{
         type:String,
         enum: ['Male', 'Female', 'Trans'],
         require:true
-       
     },
     email :{
         type: String,
         require: true,
         unique: true
     },
-    is_verified :{
+    isVerified :{
         type: Boolean,
-        require:true
+        require:true,
+        default:false
+    },
+    isLoggin :{
+        type: Boolean,
+        default:false
+    },
+    lastLogin :{
+        type: String,
+    },
+    otp :{
+        type: Number,
     },
     dataOfBirth :{
         type: String,
-        require:true
     },
     phoneNumber:{
         type:Number,

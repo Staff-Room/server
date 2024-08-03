@@ -4,7 +4,7 @@ import mongoose, { Types } from 'mongoose'
 const center = new mongoose.Schema({
     center_Name :{
         type: String,
-        require: true,
+        
     },
     center_code:{
         type:String,
@@ -16,14 +16,15 @@ const center = new mongoose.Schema({
         require: true,
     },
     educatores :{
-        type: Types.ObjectId.bind.Educator,
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Educator',
         require: true,
-        unique: true
+      
     },
     students :{
-        type: Types.ObjectId.bind.Student,
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Student',
         require: true,
-        unique: true
     },
     Center_email :{
         type: String,
@@ -36,12 +37,10 @@ const center = new mongoose.Schema({
     },
     Start_date :{
         type: String,
-        require: true,
-        unique: true
     },
     phoneNumber:{
         type:Number,
-        require:true        
+
     }
 },{timestamps:true})
 

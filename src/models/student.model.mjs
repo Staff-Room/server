@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+// mongoose.Collection('mkcl')
+
 const student = new mongoose.Schema({
     first_Name :{
         type: String,
@@ -32,7 +34,7 @@ const student = new mongoose.Schema({
         type:Number,
         require:true        
     }
-},{timestamps:true})
+},{timestamps:true, })
 
 const Student = mongoose.model('Student', student)
 

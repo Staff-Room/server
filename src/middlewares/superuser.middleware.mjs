@@ -1,34 +1,29 @@
-import { Log } from "../models/log.model.mjs";
+import { verifyToken } from "../utils/jwt.mjs";
 
-async function superUserMiddleware(req, res, next) {
-  const url = req.originalUrl
-  const method =req.method
-  const {host} = req.headers
-  const protocol = req.protocol
-  console.log(url)
-  try {
-    const log = await Log.create({
-      user: "superUser",
-      where: "web",
-      host:`${host}`,
-      type:`${method}`,
-      protocol:`${protocol}`,
-      url: `https://mkcl.com${url}`,
-      error:null,
-    });
-    console.log({ log, msg: `superUserMiddleware to middelware` });
-  } catch (error) {
-    const log = await Log.create({
-      user: "admin",
-      where: "web",
-      host:`${host}`,
-      type:`${method}`,
-      protocol:`${protocol}`,
-      url: `https://mkcl.com${url}`,
-      error:`${error}`,
-    });
-    console.log({log, msg:`error msg for this route: ${error}`});
+async function SUMUserLoggendIn(req, res, next) {
+  const token = req.cookies.token;
+
+  if (!token) {
+    res.clearCookie('token');
+    return res.redirect('/superuser');
   }
-  next();
+
+  try {
+    const verify = await verifyToken(token);  
+    console.log(verify)
+    req.user = verify
+    next();
+    // res.redirect('/superuser/dashboard/')
+  } catch (error) {
+    console.log(error);
+    res.clearCookie('token');
+    return res.redirect('/superuser');
+  }
+  // next();
 }
-export default superUserMiddleware;
+
+
+
+
+
+export { SUMUserLoggendIn };

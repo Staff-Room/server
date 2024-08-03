@@ -1,4 +1,5 @@
 import express, { urlencoded } from "express";
+import cookieParser from "cookie-parser";
 
 // routes declrataions 
 import educatorRoute from './routes/educator.routes.mjs'
@@ -8,7 +9,7 @@ import studentRoute from "./routes/student.routes.mjs";
 import educatorMiddleware from "./middlewares/educatore.middleware.mjs";
 import studentMiddleware from "./middlewares/student.middleware.mjs";
 import adminMiddleware from "./middlewares/admin.middleware.mjs";
-import superUserMiddleware from "./middlewares/superuser.middleware.mjs";
+
 import compression from "compression";
 import helmet from "helmet";
 import RateLimit from "express-rate-limit";
@@ -16,6 +17,7 @@ import RateLimit from "express-rate-limit";
 // app need for configerations
 import path from 'path'
 import { fileURLToPath } from 'url';
+// import requestLogger from '../src/middlewares/logs.mjs';
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename);
 
@@ -35,6 +37,8 @@ const limiter = RateLimit({
 });
 // Apply rate limiter to all requests
 app.use(limiter);
+// app.use(requestLogger)
+app.use(cookieParser())
 app.set('view engine', 'ejs');
 
 app.use(urlencoded ( { extended: true }))
@@ -43,8 +47,8 @@ app.use(express.static(path.join(__dirname,'public')))
 
 // routes
 app.use('/admin',adminMiddleware,adminRoute)
-app.use('/superuser',superUserMiddleware, superUserRoute)
-app.use('/api/educator', educatorMiddleware ,educatorRoute)
+app.use('/superuser', superUserRoute)
+app.use('/api/educator' ,educatorMiddleware,educatorRoute)
 app.use('/api/student',studentMiddleware, studentRoute)
 
 // app.get('/', (req, res)=>{

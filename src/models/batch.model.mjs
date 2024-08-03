@@ -10,25 +10,25 @@ const batch = new mongoose.Schema({
         require:true, 
         unique:true
     },
-    center:{
-        // type:Types.ObjectId.bind.Center,
-        type:String,
+    center:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Center',
         require:true
-    },
+    }],
     creator:{
         type:String,
         require:true
     },
-    educators:{
-        // type:Types.ObjectId.bind.Educator,
-        type:String,
+    educators:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Educator',
         require:true
-    },
-    students:{
-        // type: Types.ObjectId.Student,
-        type:String,
+    }],
+    students:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Student',
         require:true
-    },
+    }],
     subject:{
         type:String,
     },

@@ -1,9 +1,9 @@
-import { Log } from "../../models/log.model.mjs";
+
 
 async function getDashboardSuperUserController(req, res){
     try {
-        const logs = await Log.find()
-        return res.render('superuser/pages/dashboard',{logs})
+        
+        return res.render('superuser/pages/dashboard')
     } catch (error) {
         console.log(error)
     }

@@ -1,20 +1,58 @@
 import jsonwebtoken from "jsonwebtoken";
 const secret = "patu@123"
 
-function getToken(id, email) {
+function getToken(id, email, is_verified, time) {
     return jsonwebtoken.sign({
-        id: id,
+        id:id,
         email:email,
+        is_verified:is_verified,
+        time:time
     },secret)
 }
+
+function getTokenWEB(username) {
+    return jsonwebtoken.sign({
+        username:username
+    },secret, {expiresIn: '1hr'})
+}
+
 
 // console.log(getToken())
 
 
-function verifyToken(token){
-    if (!token) return null;
-    return jsonwebtoken.verify(token, secret) 
-}
-// console.log(verifyToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhdHVAZ21haWwuY29tIiwibmFtZSI6InByYXRoYW1lc2ggbW9yZSIsImlhdCI6MTcyMjEwNjEwN30.ESjAOeSMne4qQW2LdFrHveA0Su_sJSoouwsc_pcI_zU'))
+// function verifyToken(token){
+//     if (!token) return null;
+//     try{
+//     return jsonwebtoken.verify(token, secret) 
+//     }
+//     catch (error){
+//         if (error instanceof jsonwebtoken.TokenExpiredError) {
+//             console.error('Token has expired');
+//             return null;
+//           } else {
+//             console.error('Token verification failed:', error);
+//             return null;
+//           }
+//     }
+// }
 
-export {getToken, verifyToken};
+function verifyToken(token) {
+    if (!token) return null;
+    
+    try {
+        return jsonwebtoken.verify(token, secret);
+    } catch (error) {
+        if (error instanceof jsonwebtoken.TokenExpiredError) {
+            console.error('Token has expired');
+            return null;
+        } else if (error instanceof jsonwebtoken.JsonWebTokenError) {
+            console.error('Token verification failed:', error.message);
+            return null;
+        } else {
+            console.error('An unknown error occurred:', error.message);
+            return null;
+        }
+    }
+}
+
+export {getToken, verifyToken, getTokenWEB};

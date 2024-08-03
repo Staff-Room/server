@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const admin = new mongoose.Schema({
     first_Name :{
         type: String,
-
+        
     },
     last_Name :{
         type: String,

@@ -29,7 +29,8 @@ const quiz = new mongoose.Schema({
         unique: true
     },
     author:{
-        type:Types.ObjectId.bind.Admin,
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Educator',
         require: true,
     }
 })

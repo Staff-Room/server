@@ -1,33 +1,23 @@
-import { Log } from "../models/log.model.mjs";
+import { verifyToken } from "../utils/jwt.mjs";
 
 async function educatorMiddleware(req, res, next) {
   const url = req.originalUrl
-  const method =req.method
-  const {host} = req.headers
-  const protocol = req.protocol
-  try {
-    const log = await Log.create({
-      user: "admin",
-      where: "web",
-      host:`${host}`,
-      type:`${method}`,
-      protocol:`${protocol}`,
-      url: `https://mkcl.com${url}`,
-      error:null,
-    });
-    console.log({ log, msg: `educatorMiddleware to middelware` });
-  } catch (error) {
-    const log = await Log.create({
-      user: "admin",
-      where: "web",
-      host:`${host}`,
-      type:`${method}`,
-      protocol:`${protocol}`,
-      url: `https://mkcl.com${url}`,
-      error:`${error}`,
-    });
-    console.log({log, msg:`error msg for this route: ${error}`});
+  console.log(`is Educator middleware route ${url}`)
+  const {token} = req.body;
+  if (!token) {
+    res.status(404).header({msg:'go to login page no token'})
+    next();
   }
-  next();
+  try {
+    const verify = await verifyToken(token);
+    if (!verify) return res.status(401).header({msg: `go to login page no token verifyed`, isLoggin:false});
+    res.status(200).header({isLoggin:true})
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(510).header({msg:'Not Extended', isLoggin:false});
+    next();
+  }
+ 
 }
 export default educatorMiddleware;
