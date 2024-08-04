@@ -3,38 +3,36 @@ import mongoose from 'mongoose'
 // mongoose.Collection('mkcl')
 
 const student = new mongoose.Schema({
-    first_Name :{
+    firstName: String,
+    lastName: String,
+    gender: {
         type: String,
-        require: true,
-    },
-    last_Name :{
-        type: String,
-        require: true,
-    },
-    gender:{
-        type:String,
         enum: ['Male', 'Female', 'Trans'],
-        require:true
+        require: true
     },
-    email :{
+    centerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Center',
+        require: true
+    },
+    email: {
         type: String,
         require: true,
         unique: true
     },
-    is_verified :{
+    isVerified: {
         type: Boolean,
         default: false,
     },
-    dataOfBirth :{
-        type: String,
-        require: true,
-        unique: true
+    isLoggin: {
+        type: Boolean,
+        default: false
     },
-    phoneNumber:{
-        type:Number,
-        require:true        
-    }
-},{timestamps:true, })
+    lastLogin: String,
+    otp: Number,
+    dob: String,
+    phoneNumber: String,
+}, { timestamps: true, })
 
 const Student = mongoose.model('Student', student)
 

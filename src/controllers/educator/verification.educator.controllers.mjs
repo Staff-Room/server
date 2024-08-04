@@ -5,11 +5,13 @@ async function postVerficationEducatorController(req, res){
         const {email, otp} = req.body
         console.log(email, otp)
         const time = new Date().toUTCString()
-        if(!email || !otp) return res.status(204).json('No Content');
+        if(!email || !otp) return res.json('No Content');
         try {
                 const educator = await Educator.findOne({email:email})
                 if (!educator) return res.status(404).header({ isLoggin:true}).json({ email: email, msg: 'Educator not found', isLoggin:false, });
+                // console.log(educator)
                 if (educator.otp == otp) {    
+                        console.log('otp is valied')
                         educator.isVerified = true   
                         educator.lastLogin = time
                         educator.isLoggin = true
@@ -22,7 +24,7 @@ async function postVerficationEducatorController(req, res){
                 educator.isVerified = false   
                 educator.isLoggin = false
                 await educator.save()
-                return res.status(404).header({ isLoggin:false}).json({email:email,isLoggin:false, isVerified:false , otp:otp})
+                return res.status(404).header({ isLoggin:false}).json({email:email,isLoggin:false, isVerified:false , otp:otp,msg:'is not from urlencoded'})
         } catch (error) {
                 console.log(error)
                 return res.status(500).header({ isLoggin:false}).json({isLoggin:false, error:error ,msg:'Internal Server Error'})

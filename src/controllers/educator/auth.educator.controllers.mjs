@@ -1,13 +1,18 @@
-import { Educator } from '../../models/educator.model.mjs'
-import { getToken } from '../../utils/jwt.mjs';
+import { Educator } from '../../models/educator.model.mjs';
 import generateNumericOTP from '../../utils/otp.mjs';
+
+import validator from 'validator';
 
 async function postAuthEducatorController(req, res) {
     const { email } = req.body;
     console.log(email)
     const time = new Date().toLocaleString()
+    if (!email) return res.json({Email:null,EmailCheck:false, msg:'No content'});
+    
+    const checkEmail = validator.isEmail(email)
+    if (!checkEmail) return res.json({Email:email,EmailCheck:false, msg:'Invalied Email Address'});
+    console.log(checkEmail)
 
-    if (!email) return res.status(204).json({ 'msg': 'No content' });
     try {
         const educator = await Educator.findOne({ email: email })
         const OTP = generateNumericOTP()
@@ -21,7 +26,7 @@ async function postAuthEducatorController(req, res) {
                 is_verified: false,
                 otp: OTP
             })
-            return res.status(200).json({
+            return res.status(200).headers({educatorid:user._id}).json({
                 email: user.email,
                 "OTP": OTP,
             })

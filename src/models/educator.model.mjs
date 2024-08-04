@@ -1,18 +1,15 @@
 import mongoose from 'mongoose'
 
 const educator = new mongoose.Schema({
-    first_Name :{
-        type: String,
-        require:true
-    },
-    last_Name :{
-        type: String,
-        require:true
-    },
+    firstName: String,
+    lastName: String,
     gender:{
         type:String,
         enum: ['Male', 'Female', 'Trans'],
-        require:true
+    },
+    centerId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Center',
     },
     email :{
         type: String,
@@ -28,19 +25,10 @@ const educator = new mongoose.Schema({
         type: Boolean,
         default:false
     },
-    lastLogin :{
-        type: String,
-    },
-    otp :{
-        type: Number,
-    },
-    dataOfBirth :{
-        type: String,
-    },
-    phoneNumber:{
-        type:Number,
-        require:true        
-    }
+    lastLogin: String,
+    otp: Number,
+    dob: String,
+    phoneNumber: String,
 },{timestamps:true})
 
 const Educator = mongoose.model('Educator', educator)

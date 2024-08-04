@@ -1,12 +1,7 @@
 
 
 async function getDashboardSuperUserController(req, res){
-    try {
-        
-        return res.render('superuser/pages/dashboard')
-    } catch (error) {
-        console.log(error)
-    }
+    return res.status(200).json({msg:'get Dashboard superuser controller'})
 
 }
 

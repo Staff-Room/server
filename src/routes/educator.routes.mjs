@@ -17,6 +17,7 @@ educatorRoute.post('/auth', postAuthEducatorController);
 // Educator Verification GET, POST API's
 educatorRoute.post('/verification', postVerficationEducatorController);
 
+
 // Educator Detail GET, POST, PUT, PATCH API's
 educatorRoute.get('/detail', getDetailEducatorController);
 educatorRoute.post('/detail', postDetailEducatorController);
@@ -27,6 +28,10 @@ educatorRoute.get('/batch', getBatchEducatorController);
 educatorRoute.post('/batch', postBatchEducatorController);
 educatorRoute.patch('/batch', patchBatchEducatorController);
 educatorRoute.delete('/batch', deleteBatchEducatorController);
+
+
+// educatorRoute.patch('/batch', patchBatchEducatorController);
+// educatorRoute.delete('/batch', deleteBatchEducatorController);
 
 
 export default educatorRoute;

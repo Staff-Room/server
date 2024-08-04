@@ -1,59 +1,71 @@
-import express, { urlencoded } from "express";
-import cookieParser from "cookie-parser";
 
-// routes declrataions 
-import educatorRoute from './routes/educator.routes.mjs'
-import superUserRoute from "./routes/superuser.routes.mjs";
-import adminRoute from "./routes/admin.routes.mjs";
-import studentRoute from "./routes/student.routes.mjs";
-import educatorMiddleware from "./middlewares/educatore.middleware.mjs";
-import studentMiddleware from "./middlewares/student.middleware.mjs";
-import adminMiddleware from "./middlewares/admin.middleware.mjs";
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import compression from 'compression';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 
-import compression from "compression";
-import helmet from "helmet";
-import RateLimit from "express-rate-limit";
+// Routes declarations
+import educatorRoute from './routes/educator.routes.mjs';
+import superUserRoute from './routes/superuser.routes.mjs';
+import adminRoute from './routes/admin.routes.mjs';
+import studentRoute from './routes/student.routes.mjs';
 
-// app need for configerations
-import path from 'path'
+// Middlewares declarations
+import educatorMiddleware from './middlewares/educatore.middleware.mjs';
+import studentMiddleware from './middlewares/student.middleware.mjs';
+import adminMiddleware from './middlewares/admin.middleware.mjs';
+
+// App configurations
+import path from 'path';
 import { fileURLToPath } from 'url';
-// import requestLogger from '../src/middlewares/logs.mjs';
-const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+
+// Resolve __dirname
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express()
+const app = express();
+
 app.use(compression());
-app.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
-      },
-    }),
-  );
-  // Set up rate limiter: maximum of twenty requests per minute
-const limiter = RateLimit({
+
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    "default-src": ["'self'"],
+    "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+    // Add other directives as needed
+  },
+}));
+
+// Set up rate limiter: maximum of twenty requests per minute
+const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
-  max: 20,
+  max: 120,
+  message: 'Too many requests, please try again later.',
+  headers: true,
 });
+
 // Apply rate limiter to all requests
 app.use(limiter);
-// app.use(requestLogger)
-app.use(cookieParser())
-app.set('view engine', 'ejs');
 
-app.use(urlencoded ( { extended: true }))
-app.use(express.static(path.join(__dirname,'public')))
-// app.use(apiRequestEducator)
+// Request logger (uncomment if needed)
+// import requestLogger from '../src/middlewares/logs.mjs';
+// app.use(requestLogger);
 
-// routes
-app.use('/admin',adminMiddleware,adminRoute)
-app.use('/superuser', superUserRoute)
-app.use('/api/educator' ,educatorMiddleware,educatorRoute)
-app.use('/api/student',studentMiddleware, studentRoute)
+app.use(cookieParser());
 
-// app.get('/', (req, res)=>{
-//     res.send('hello world for app')
-// })
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
+app.use('/admin',  adminRoute);
+app.use('/superuser', superUserRoute);
+app.use('/api/educator', educatorMiddleware, educatorRoute);
+app.use('/api/student', studentMiddleware, studentRoute);
+
+// Uncomment and use if needed
+// app.get('/', (req, res) => {
+//     res.send('hello world for app');
+// });
 
 export default app;

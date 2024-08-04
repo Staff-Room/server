@@ -1,49 +1,55 @@
-import mongoose, { Types } from 'mongoose'
-// import { Educator } from './educator.model.mjs';
+import mongoose from 'mongoose';
 
-const center = new mongoose.Schema({
-    center_Name :{
+// Define the schema for the Center model
+const centerSchema = new mongoose.Schema({
+    centerName: {
         type: String,
+        required: true,  // Added required
+    },
+    centerId: {
+        type: String,    // Keeping as String based on your structure
+        required: true,  // Changed 'require' to 'required'
+        unique: true,
+    },
+    centerAddress: String,
         
-    },
-    center_code:{
-        type:String,
-        require:true,
-        unique:true,
-    },
-    center_Address :{
-        type: String,
-        require: true,
-    },
-    educatores :{
+    centerAdmin: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Educator',
-        require: true,
-      
-    },
-    students :{
+        ref: 'Admin', // Changed 'require' to 'required'
+    }],
+    educators: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Student',
-        require: true,
-    },
-    Center_email :{
+        ref: 'Educator',
+         // Changed 'require' to 'required'
+    }],
+    students: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Student',
+      // Changed 'require' to 'required'
+    }],
+    batches: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Batch',
+         // Changed 'require' to 'required'
+    }],
+    centerEmail: {
         type: String,
-        require: true,
-        unique: true
+        required: true,  // Changed 'require' to 'required'
+        unique: true,
     },
-    is_verified :{
+    isVerified: {
         type: Boolean,
         default: false,
     },
-    Start_date :{
-        type: String,
+    startDate: {
+        type: Date,      // Changed to Date type
     },
-    phoneNumber:{
-        type:Number,
-
+    phoneNumber: {
+        type: Number,
     }
-},{timestamps:true})
+}, { timestamps: true });
 
-const Center = mongoose.model('Center', center)
+// Create the Center model
+const Center = mongoose.model('Center', centerSchema);
 
 export { Center };

@@ -1,12 +1,7 @@
 
 
 async function getLogsSuperUserController(req, res){
-    try {
-        
-        return res.render('superuser/pages/logs')
-    } catch (error) {
-        console.log(error)
-    }
+    return res.json({msg:'is a get logs superuser controller'})
 
 }
 

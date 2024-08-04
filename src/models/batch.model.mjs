@@ -1,45 +1,32 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
 const batch = new mongoose.Schema({
-    name:{
-        type:String,
-        require:true
-    },
-    batch_code:{
+    name:String,
+    batchId:{
         type:String,
         require:true, 
         unique:true
     },
-    center:[{
+    center:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'Center',
         require:true
-    }],
+    },
     creator:{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
         require:true
     },
     educators:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Educator',
-        require:true
     }],
     students:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Student',
-        require:true
     }],
-    subject:{
-        type:String,
-    },
-    start_at:{
-        type:String,
-        require:true
-    },
-    end_at:{
-        type:String,
-        require:true
-    },
+    subject:String,
+    start_at:String,
+    end_at:String,
     
 },{timestamps:true})
 

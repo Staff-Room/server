@@ -3,38 +3,49 @@ import { getToken } from "../../utils/jwt.mjs";
 import { sendMail } from "../../utils/mail.mjs";
 
 async function getAuthAdmin(req, res) {
-  res.render("admin/admin", { url: "/verification" });
+  return res.json({msg:'is a get auth admin'})
+
 }
+
+
+
 
 async function postAuthAdmin(req, res) {
   const { email } = req.body;
   console.log(email);
+
   if (!email) {
-    return res.redirect("/admin");
+    return res.redirect('/admin');
   }
+
   try {
-    let user = await Admin.findOne({ email: email });
-    
-    console.log(user);
+    let user = await Admin.findOne({ email });
+
     if (user) {
       user.is_verified = false;
       await user.save();
-      const token = getToken(user.id,email)
-      console.log(token);
-      await sendMail(email, token)
-      console.log(user);
     } else {
-      const newUser = await Admin.create({ email: email, is_verified: false });
-      const token = getToken(newUser.id,email)
-      console.log(token);
-      await sendMail(email, token)
-      console.log(newUser.email);
+      user = await Admin.create({ email, is_verified: false });
     }
-    return res.redirect(`/admin/verification?email=${encodeURIComponent(email)}`);
+
+    // Generate a token
+    const token = getToken(user.id, user.email)
+    console.log(token);
+
+    // Send the token via email (uncomment when ready)
+    // await sendMail(email, token);
+
+    // Set cookies or other necessary responses
+    res.cookie('email', email, { httpOnly: true, secure: false }); // Adjust `secure` as per your environment
+
+    console.log(`http://localhost:8000/admin/verification?token=${token}`)
+    // Redirect to verification page
+    return res.redirect(`/admin/verification`);
   } catch (error) {
     console.error(error);
-    return res.status(500).send("/admin");
+    return res.status(500).redirect('/admin');
   }
 }
+
 
 export { getAuthAdmin, postAuthAdmin };

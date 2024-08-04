@@ -1,0 +1,1 @@
+[[{"timestamp":"2024-08-02T20:32:57.207Z","method":"GET","url":"/superuser","statusCode":200,"duration":0},{"timestamp":"2024-08-02T20:32:57.226Z","method":"GET","url":"/superuser","statusCode":304,"duration":19},{"timestamp":"2024-08-02T20:34:49.711Z","method":"GET","url":"/superuser","statusCode":304,"duration":18}],null,2]

@@ -5,17 +5,17 @@ async function educatorMiddleware(req, res, next) {
   console.log(`is Educator middleware route ${url}`)
   const {token} = req.body;
   if (!token) {
-    res.status(404).header({msg:'go to login page no token'})
+    res.header({isToken:false})
     next();
   }
   try {
     const verify = await verifyToken(token);
-    if (!verify) return res.status(401).header({msg: `go to login page no token verifyed`, isLoggin:false});
-    res.status(200).header({isLoggin:true})
+    if (!verify) return res.header({isToken:true,isVailedToken:false, isLoggin:false});
+    res.header({isLoggin:true, isToken:true,isVailedToken:true,})
     next();
   } catch (error) {
     console.log(error);
-    res.status(510).header({msg:'Not Extended', isLoggin:false});
+    res.header({msg:'Not Extended', isLoggin:false}).json();
     next();
   }
  
